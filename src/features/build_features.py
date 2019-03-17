@@ -15,15 +15,22 @@ import numpy as np
 import pandas as pd
 
 
-def delta_height(data, cols, hrs):
+def delta_height(data, cols, hrs, norm=True):
     '''
     Create the change in stage
     '''
     list_d = []
     for col in cols:
-        delta = (data[col].shift(hrs).fillna(0).values - data[col].values)/hrs
-        name = 'delta_{}'.format(col)
+        if norm:
+            delta = (data[col].shift(hrs) - data[col])/hrs
+        else:
+            delta = data[col].shift(hrs) - data[col]
+        
+        name = 'delta_{}_{}'.format(hrs, col)
         data[name] = delta
+        
+    # remove rows
+    data = data.iloc[hrs:, :]
         
     return data
 
@@ -41,4 +48,3 @@ def shift_columns(data, cols, hrs):
             
     return data
                      
-          

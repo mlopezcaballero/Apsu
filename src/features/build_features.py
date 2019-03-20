@@ -48,3 +48,29 @@ def shift_columns(data, cols, hrs):
             
     return data
                      
+
+def column_shift_bak(df, dup_cols, N, delta): 
+    '''
+    Deriving new features by shifting columns by a given timedelta. That is, each time series 
+    is shifted back N*delta, N*2*delta, N*3*delta, where N is number of columns and delta
+    time shift periods.
+    '''    
+    dfs = df.copy()
+    for col in dup_cols:
+        for i in range (1,N+1):
+            colname = col + "_" + str(i*delta)
+            dfs[colname] = dfs[col].shift(periods = i*delta)
+    return dfs
+
+
+def column_shift(df, dup_cols, N, delta): 
+    '''
+    Deriving new features by shifting columns by a given timedelta. That is, each time series 
+    is shifted back N*delta, N*2*delta, N*3*delta, where N is number of columns and delta
+    time shift periods.
+    '''    
+    for col in dup_cols:
+        for i in range (1,N+1):
+            colname = col + "_" + str(i*delta)
+            df[colname] = df[col].shift(periods = i*delta)
+    return df

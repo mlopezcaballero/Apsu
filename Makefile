@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3
+.PHONY: clean data requirements
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -13,13 +13,9 @@ HAS_CONDA=True
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
-## Build and install
-build: 
-
 ## Install Python Dependencies
-requirements: test_environment
-	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
-	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
+requirements:
+	pip install -r requirements.txt
 
 ## Make Dataset
 data: requirements
@@ -30,13 +26,6 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
-## Lint using flake8
-lint:
-	flake8 src
-
-## Download Data from ITAINNOVA
-
-
 ## Set up python interpreter environment
 environment:
 ifeq (True,$(HAS_CONDA))
@@ -46,10 +35,6 @@ ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
 endif
 		@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
 endif
-
-## Test python environment is setup correctly
-test_environment:
-	$(PYTHON_INTERPRETER) test_environment.py
 
 #################################################################################
 # PROJECT RULES                                                                 #

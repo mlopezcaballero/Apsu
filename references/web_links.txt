@@ -4,3 +4,4 @@ https://www.usgs.gov/mission-areas/water-resources/science/flood-inundation-mapp
 https://books.google.es/books?id=gkalyqTMXNEC&pg=PA88&redir_esc=y#v=onepage&q&f=false
 
 https://stats.stackexchange.com/questions/175026/formula-for-95-confidence-interval-for-r2
+

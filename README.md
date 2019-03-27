@@ -30,7 +30,8 @@ Project Organization
     ├── data
     │   ├── external       <- External data
     │   ├── interim        <- 
-    │   └── other          <- Other type of data.
+    │   ├── AEMET          <- Data from AEMET.
+    │   └── SAIHEBRO.      <- Data from SAIHEBRO.
     │
     ├── ENTRADA            <- Original data, from Aragon government.
     │

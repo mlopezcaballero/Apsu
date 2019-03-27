@@ -60,9 +60,56 @@ def load_meteo(path, dic_files, cols):
         df_meteo[col] = pd.to_numeric(df_meteo[col], errors='coerce')
     
     return df_meteo
-        
-        
-        
-        
+
+
+def load_ebro(path, features, stations, variables, start, end):
+    list_df = []
+    for i_feature in features:
+        feature = os.listdir(os.path.join(path, i_feature))
+
+        for i_station in stations:
+            station = [i for i in feature if i_station in i]
+
+            for i_variable in variables:
+                variable = [i for i in station if i_variable in i]
+
+                if len(variable) > 0:
+                    df = pd.read_csv(os.path.join(path, i_feature, variable[0]), sep = ';')
+
+                    df.columns = df.columns.str.replace(' ', '')
+
+                    df.FECHA = pd.to_datetime(df.FECHA)
+
+                    df = df.set_index('FECHA')
+
+                    # remove min and max dates
+                    df = df.drop(df.filter(regex='FECHA').columns, axis=1)
+
+                    # replace comma with dots
+                    df = df.stack().str.replace(',','.').unstack()
+
+                    #Text columns to numeric
+                    for col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+                    df = df.dropna(how='all', axis=1)
+
+                    # complete hourly data
+                    df = df.resample('H').ffill()/24
+
+                    # Filter by period
+                    df = df[(df.index >= start) & (df.index <= end)]
+
+                    # add prefix to columns
+                    prefix = variable[0].split('.')[0] + '_'
+                    df = df.add_prefix(prefix)
+
+                    # Append df to frames
+                    list_df.append(df)
+
+    # Concatenate frames into a single DataFrame
+    df_ebro = pd.concat(list_df, axis=1)
+    
+    return df_ebro
         
         

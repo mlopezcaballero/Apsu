@@ -17,9 +17,17 @@ Create environment
 
     `make requirements`
     
-4. Create data set:
+4. Create data set and train model:
 
-5. Train the model:
+    run the notebook 1.1-mlc-train-model
+
+5. Make predictions:
+
+    `python codigo.py <name-input-file.csv>`
+    
+    Notes: 
+    * <name-input-file.csv> should be the file used to make the predictions and should be in the "ENTRADA" folder.
+    * The results "resultados.csv" will be stored in the folder "SALIDA".
 
 Project Organization
 ------------

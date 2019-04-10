@@ -152,6 +152,8 @@ def column_shift(df, dup_cols, N, delta):
 
 def main(raw_file):
     # Load data from ITA
+    if raw_file == '':
+        raw_file = 'datos.csv'
     path = 'ENTRADA/'
     df_raw = load_data(path, raw_file)
 
@@ -166,12 +168,12 @@ def main(raw_file):
     idx = df_raw.resample('D').mean().index
 
     # Estation to load data
-    estaciones = {'pna': '9262-19530901-20190131.csv',  
-                  'zar_aero':'9434-19410101-20190302.csv'}
+    estaciones = {'pna': 'pamplona.csv',  
+                  'zar':'zaragoza.csv'}
 
     # inputs
     cols = ['FECHA','TMEDIA','TMIN','TMAX','PRECIPITACION']
-    path_meteo = 'data/AEMET/DatosPorEstacion/'
+    path_meteo = 'data/meteo/'
 
     # Load meteo data and filter by period
     df_meteo = load_meteo(path_meteo, estaciones, cols) 
@@ -183,7 +185,7 @@ def main(raw_file):
     df_meteo = df_meteo[(df_meteo.index >= start) & (df_meteo.index <= end)]
 
     # Load data from SAHIEBRO
-    path_ebro = 'data/SAIHEBRO/'
+    path_ebro = 'data/ibai/'
     features = ['AFORO', 'PRECIPITACION', 'TEMPERATURA']
     stations = ['A001', 'A002', 'A005', 'A011', 'EM75']
     variables = ['NRIO1', 'PACUM', 'TEMPE']
@@ -253,5 +255,13 @@ def main(raw_file):
     print('DONE')
     
 if __name__ == '__main__':
-    print(sys.argv[1])
-    main(sys.argv[1])
+    try:
+        print(sys.argv[1])
+        file_name = sys.argv[1]
+        
+    except:
+        file_name = 'datos.csv'
+        print(file_name)
+    
+    
+    main(file_name)
